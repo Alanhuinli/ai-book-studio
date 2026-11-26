@@ -1,9 +1,13 @@
+import fs from 'fs/promises';
+import path from 'path';
 import { PDFDocument, StandardFonts, rgb, degrees } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 
 export interface WatermarkPdfInput {
   bookTitle: string;
   bookSubtitle: string;
+  coverImageUrl?: string | null;
+  siteOrigin?: string;
   versionCode: string;
   authorName: string;
   readerEmail: string;
@@ -18,14 +22,57 @@ export interface WatermarkPdfInput {
   existingPdfBytes?: Uint8Array | null;
 }
 
-async function fetchSubsetTraditionalChineseFont(textToRender: string): Promise<Uint8Array | null> {
+async function loadImageBytes(
+  srcUrl: string,
+  siteOrigin?: string
+): Promise<{ bytes: Uint8Array; format: 'jpg' | 'png' } | null> {
+  try {
+    const cleanPath = srcUrl.split('?')[0];
+    const lower = cleanPath.toLowerCase();
+    if (!lower.endsWith('.jpg') && !lower.endsWith('.jpeg') && !lower.endsWith('.png')) {
+      return null;
+    }
+    const format: 'jpg' | 'png' = lower.endsWith('.png') ? 'png' : 'jpg';
+
+    if (cleanPath.startsWith('/')) {
+      const localPath = path.join(process.cwd(), 'public', cleanPath);
+      try {
+        const buf = await fs.readFile(localPath);
+        return { bytes: new Uint8Array(buf), format };
+      } catch {
+        if (siteOrigin) {
+          const res = await fetch(`${siteOrigin}${cleanPath}`, {
+            signal: AbortSignal.timeout(6000),
+          });
+          if (res.ok) {
+            return { bytes: new Uint8Array(await res.arrayBuffer()), format };
+          }
+        }
+      }
+      return null;
+    }
+
+    if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://')) {
+      const res = await fetch(srcUrl, { signal: AbortSignal.timeout(6000) });
+      if (res.ok) {
+        return { bytes: new Uint8Array(await res.arrayBuffer()), format };
+      }
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchSubsetTraditionalChineseFont(
+  textToRender: string
+): Promise<Uint8Array | null> {
   try {
     const uniqueChars = Array.from(new Set(textToRender.replace(/\s+/g, ''))).join('');
     const cssUrl = `https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&text=${encodeURIComponent(
       uniqueChars.slice(0, 3500)
     )}`;
 
-    // Request TrueType (.ttf) format compatible with @pdf-lib/fontkit
     const cssRes = await fetch(cssUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; rv:27.0) Gecko/20100101 Firefox/27.0',
@@ -50,29 +97,7 @@ async function fetchSubsetTraditionalChineseFont(textToRender: string): Promise<
   }
 }
 
-function stripMarkdownForPdf(md: string): string[] {
-  return md
-    .replace(/```[\s\S]*?```/g, (block) =>
-      block
-        .replace(/```\w*\n?/g, '')
-        .split('\n')
-        .map((l) => `    ${l}`)
-        .join('\n')
-    )
-    .split('\n')
-    .map((line) =>
-      line
-        .replace(/^#{1,6}\s+/, '■ ')
-        .replace(/\*\*(.*?)\*\*/g, '$1')
-        .replace(/`([^`]+)`/g, '$1')
-        .trimEnd()
-    );
-}
-
-function wrapLineByWidth(
-  text: string,
-  maxCharsPerLine: number
-): string[] {
+function wrapLineByWidth(text: string, maxCharsPerLine: number): string[] {
   if (!text) return [''];
   const result: string[] = [];
   let current = '';
@@ -106,20 +131,17 @@ export async function generateWatermarkedBookPdf(
     input.readerEmail,
     input.readerName,
     input.watermarkFingerprint,
-    "艾倫數位書坊 Alan's AI Press 專屬授權電子書 嚴禁未經授權公開轉載散佈或轉售 頁 授權訂戶 數位指紋 時間",
+    "艾倫數位書坊 Alan's AI Press 專屬授權電子書 嚴禁未經授權公開轉載散佈或轉售 第頁 授權訂戶 數位指紋 圖解 ▲ ■",
     ...input.chapters.map((c) => `${c.title}\n${c.contentMarkdown}`),
   ].join('\n');
 
   const cjkFontBytes = await fetchSubsetTraditionalChineseFont(allTextSample);
 
-  // Case A: Stamp personal watermark onto author-uploaded master PDF
   if (input.existingPdfBytes && input.existingPdfBytes.byteLength > 0) {
     const pdfDoc = await PDFDocument.load(input.existingPdfBytes);
     pdfDoc.registerFontkit(fontkit);
     const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const customFont = cjkFontBytes
-      ? await pdfDoc.embedFont(cjkFontBytes)
-      : null;
+    const customFont = cjkFontBytes ? await pdfDoc.embedFont(cjkFontBytes) : null;
 
     const pages = pdfDoc.getPages();
     const asciiStamp = `Licensed to: ${input.readerEmail} | ID: ${input.watermarkFingerprint} | Alan's AI Press`;
@@ -154,22 +176,13 @@ export async function generateWatermarkedBookPdf(
           color: rgb(0.45, 0.45, 0.5),
           opacity: 0.85,
         });
-        page.drawText(asciiStamp, {
-          x: width * 0.12,
-          y: height * 0.35,
-          size: 15,
-          font: helvetica,
-          color: rgb(0.55, 0.55, 0.62),
-          rotate: degrees(32),
-          opacity: 0.13,
-        });
       }
     }
 
     return await pdfDoc.save();
   }
 
-  // Case B: Dynamically typeset full e-book chapters with personal watermark
+  // Dynamically typeset full illustrated e-book PDF with personal watermark
   const pdfDoc = await PDFDocument.create();
   pdfDoc.registerFontkit(fontkit);
   const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -179,11 +192,12 @@ export async function generateWatermarkedBookPdf(
   pdfDoc.setTitle(`${input.bookTitle} (${input.versionCode})`);
   pdfDoc.setAuthor(input.authorName);
   pdfDoc.setSubject(`Licensed to ${input.readerEmail} [${input.watermarkFingerprint}]`);
-  pdfDoc.setProducer("Alan's AI Press Dynamic Watermark Engine");
+  pdfDoc.setProducer("Alan's AI Press Dynamic Illustrated Watermark Engine");
 
   const pageWidth = 595.28; // A4
   const pageHeight = 841.89;
-  const marginX = 56;
+  const marginX = 52;
+  const contentWidth = pageWidth - marginX * 2;
 
   const drawWatermarkChrome = (
     page: ReturnType<typeof pdfDoc.addPage>,
@@ -194,7 +208,7 @@ export async function generateWatermarkedBookPdf(
         `艾倫數位書坊 Alan's AI Press ｜ ${input.bookTitle} (${input.versionCode})`,
         {
           x: marginX,
-          y: pageHeight - 36,
+          y: pageHeight - 34,
           size: 8.5,
           font,
           color: rgb(0.42, 0.45, 0.52),
@@ -204,7 +218,7 @@ export async function generateWatermarkedBookPdf(
         `授權訂戶：${input.readerEmail} ｜ 數位指紋：${input.watermarkFingerprint} ｜ 嚴禁未經授權公開轉載散佈`,
         {
           x: marginX,
-          y: 26,
+          y: 24,
           size: 8,
           font,
           color: rgb(0.45, 0.45, 0.5),
@@ -212,7 +226,7 @@ export async function generateWatermarkedBookPdf(
       );
       page.drawText(`第 ${pageNumber} 頁`, {
         x: pageWidth - marginX - 42,
-        y: 26,
+        y: 24,
         size: 8,
         font,
         color: rgb(0.45, 0.45, 0.5),
@@ -222,53 +236,22 @@ export async function generateWatermarkedBookPdf(
         {
           x: 88,
           y: 260,
-          size: 20,
+          size: 19,
           font,
           color: rgb(0.35, 0.38, 0.55),
           rotate: degrees(34),
-          opacity: 0.1,
-        }
-      );
-      page.drawText(
-        `艾倫數位書坊防盜版數位浮水印 · ${input.downloadedAtIso.slice(0, 10)}`,
-        {
-          x: 110,
-          y: 510,
-          size: 17,
-          font,
-          color: rgb(0.35, 0.38, 0.55),
-          rotate: degrees(34),
-          opacity: 0.08,
+          opacity: 0.09,
         }
       );
     } else {
-      page.drawText(`Alan's AI Press | Version ${input.versionCode}`, {
-        x: marginX,
-        y: pageHeight - 36,
-        size: 9,
-        font: helveticaBold,
-        color: rgb(0.42, 0.45, 0.52),
-      });
       page.drawText(
         `Licensed to: ${input.readerEmail} | Fingerprint: ${input.watermarkFingerprint} | Page ${pageNumber}`,
         {
           x: marginX,
-          y: 26,
+          y: 24,
           size: 8.5,
           font: helvetica,
           color: rgb(0.45, 0.45, 0.5),
-        }
-      );
-      page.drawText(
-        `Licensed to ${input.readerEmail} [${input.watermarkFingerprint}]`,
-        {
-          x: 84,
-          y: 290,
-          size: 19,
-          font: helveticaBold,
-          color: rgb(0.35, 0.38, 0.55),
-          rotate: degrees(34),
-          opacity: 0.11,
         }
       );
     }
@@ -279,95 +262,115 @@ export async function generateWatermarkedBookPdf(
   const cover = pdfDoc.addPage([pageWidth, pageHeight]);
   cover.drawRectangle({
     x: 0,
-    y: pageHeight - 280,
+    y: pageHeight - 245,
     width: pageWidth,
-    height: 280,
-    color: rgb(0.11, 0.14, 0.28),
+    height: 245,
+    color: rgb(0.09, 0.11, 0.24),
   });
 
   if (cjkFontBytes) {
-    cover.drawText("艾倫數位書坊 ALAN'S AI PRESS", {
+    cover.drawText("艾倫數位書坊 ALAN'S AI PRESS · 全彩圖解實戰電子書", {
       x: marginX,
-      y: pageHeight - 82,
-      size: 11,
+      y: pageHeight - 72,
+      size: 10.5,
       font,
       color: rgb(0.72, 0.78, 0.98),
     });
-    const titleLines = wrapLineByWidth(input.bookTitle, 32);
-    let ty = pageHeight - 135;
+    const titleLines = wrapLineByWidth(input.bookTitle, 34);
+    let ty = pageHeight - 116;
     for (const tl of titleLines) {
       cover.drawText(tl, {
         x: marginX,
         y: ty,
-        size: 24,
+        size: 22,
         font,
         color: rgb(1, 1, 1),
       });
-      ty -= 34;
+      ty -= 31;
     }
-    const subLines = wrapLineByWidth(input.bookSubtitle, 52);
+    const subLines = wrapLineByWidth(input.bookSubtitle, 56);
     for (const sl of subLines) {
       cover.drawText(sl, {
         x: marginX,
-        y: ty - 4,
-        size: 12,
+        y: ty - 2,
+        size: 11.5,
         font,
         color: rgb(0.84, 0.88, 0.96),
       });
-      ty -= 20;
+      ty -= 18;
+    }
+
+    // Embed Cover Illustration if present
+    let coverArtBottomY = pageHeight - 270;
+    if (input.coverImageUrl) {
+      const imgData = await loadImageBytes(input.coverImageUrl, input.siteOrigin);
+      if (imgData) {
+        const embedded =
+          imgData.format === 'png'
+            ? await pdfDoc.embedPng(imgData.bytes)
+            : await pdfDoc.embedJpg(imgData.bytes);
+        const drawH = (contentWidth * embedded.height) / embedded.width;
+        const clampedH = Math.min(drawH, 265);
+        cover.drawImage(embedded, {
+          x: marginX,
+          y: pageHeight - 265 - clampedH,
+          width: contentWidth,
+          height: clampedH,
+        });
+        coverArtBottomY = pageHeight - 285 - clampedH;
+      }
     }
 
     cover.drawText(`發行版本：${input.versionCode}　｜　作者：${input.authorName}`, {
       x: marginX,
-      y: pageHeight - 330,
-      size: 12,
+      y: Math.max(265, coverArtBottomY - 12),
+      size: 11.5,
       font,
       color: rgb(0.18, 0.2, 0.26),
     });
 
-    // Personal License Box on Cover
     cover.drawRectangle({
       x: marginX,
-      y: 120,
-      width: pageWidth - marginX * 2,
-      height: 145,
+      y: 95,
+      width: contentWidth,
+      height: 140,
       borderColor: rgb(0.3, 0.36, 0.72),
       borderWidth: 1,
       color: rgb(0.96, 0.97, 1),
     });
     cover.drawText('個人專屬數位版權與動態浮水印憑證', {
-      x: marginX + 20,
-      y: 235,
-      size: 12,
+      x: marginX + 18,
+      y: 208,
+      size: 11.5,
       font,
       color: rgb(0.16, 0.2, 0.48),
     });
     cover.drawText(`授權帳號：${input.readerEmail}`, {
-      x: marginX + 20,
-      y: 208,
-      size: 10.5,
+      x: marginX + 18,
+      y: 182,
+      size: 10,
       font,
       color: rgb(0.2, 0.22, 0.28),
     });
     cover.drawText(`數位浮水印指紋：${input.watermarkFingerprint}`, {
-      x: marginX + 20,
-      y: 186,
-      size: 10.5,
+      x: marginX + 18,
+      y: 161,
+      size: 10,
       font,
       color: rgb(0.2, 0.22, 0.28),
     });
     cover.drawText(`簽發時間：${input.downloadedAtIso}`, {
-      x: marginX + 20,
-      y: 164,
-      size: 10,
+      x: marginX + 18,
+      y: 140,
+      size: 9.5,
       font,
       color: rgb(0.35, 0.38, 0.44),
     });
     cover.drawText(
-      '本電子書檔案僅供購買本人離線閱讀使用，每頁均內嵌隱性與顯性個人授權編號，請勿公開上傳或轉散佈。',
+      '本電子書檔案僅供購買本人離線閱讀使用，每頁均內嵌個人授權編號，請勿公開上傳或轉散佈。',
       {
-        x: marginX + 20,
-        y: 138,
+        x: marginX + 18,
+        y: 114,
         size: 8.5,
         font,
         color: rgb(0.42, 0.22, 0.22),
@@ -381,37 +384,15 @@ export async function generateWatermarkedBookPdf(
       font: helveticaBold,
       color: rgb(1, 1, 1),
     });
-    cover.drawText(`Version: ${input.versionCode}`, {
-      x: marginX,
-      y: pageHeight - 150,
-      size: 14,
-      font: helvetica,
-      color: rgb(0.88, 0.9, 0.98),
-    });
-    cover.drawText(`Licensed Reader: ${input.readerEmail}`, {
-      x: marginX,
-      y: 220,
-      size: 12,
-      font: helveticaBold,
-      color: rgb(0.15, 0.18, 0.3),
-    });
-    cover.drawText(`Watermark Fingerprint: ${input.watermarkFingerprint}`, {
-      x: marginX,
-      y: 195,
-      size: 11,
-      font: helvetica,
-      color: rgb(0.2, 0.22, 0.3),
-    });
   }
   drawWatermarkChrome(cover, pageCount);
 
-  // Content Pages (when CJK font available, render full Chinese chapters; otherwise license summary)
   if (cjkFontBytes) {
     for (const ch of input.chapters) {
       pageCount += 1;
       let page = pdfDoc.addPage([pageWidth, pageHeight]);
       drawWatermarkChrome(page, pageCount);
-      let cursorY = pageHeight - 82;
+      let cursorY = pageHeight - 78;
 
       const chHeaderLines = wrapLineByWidth(ch.title, 44);
       for (const hl of chHeaderLines) {
@@ -422,31 +403,119 @@ export async function generateWatermarkedBookPdf(
           font,
           color: rgb(0.12, 0.16, 0.38),
         });
-        cursorY -= 26;
+        cursorY -= 25;
       }
-      cursorY -= 10;
+      cursorY -= 8;
 
-      const rawLines = stripMarkdownForPdf(ch.contentMarkdown);
-      for (const rawLine of rawLines) {
-        const isHeading = rawLine.startsWith('■ ');
-        const wrapped = wrapLineByWidth(rawLine, isHeading ? 54 : 64);
+      const mdLines = ch.contentMarkdown.split('\n');
+      let inCode = false;
+
+      for (const raw of mdLines) {
+        const trimmed = raw.trim();
+        if (trimmed.startsWith('```')) {
+          inCode = !inCode;
+          continue;
+        }
+
+        // Render embedded JPG/PNG illustrations inside PDF!
+        const imgMatch = !inCode ? trimmed.match(/^!\[(.*?)\]\((.*?)\)$/) : null;
+        if (imgMatch) {
+          const [, caption, imgSrc] = imgMatch;
+          const imgData = await loadImageBytes(imgSrc, input.siteOrigin);
+          if (imgData) {
+            const embedded =
+              imgData.format === 'png'
+                ? await pdfDoc.embedPng(imgData.bytes)
+                : await pdfDoc.embedJpg(imgData.bytes);
+            const targetH = Math.min(
+              235,
+              (contentWidth * embedded.height) / embedded.width
+            );
+            if (cursorY - targetH - 28 < 62) {
+              pageCount += 1;
+              page = pdfDoc.addPage([pageWidth, pageHeight]);
+              drawWatermarkChrome(page, pageCount);
+              cursorY = pageHeight - 72;
+            }
+            page.drawImage(embedded, {
+              x: marginX,
+              y: cursorY - targetH,
+              width: contentWidth,
+              height: targetH,
+            });
+            cursorY -= targetH + 14;
+            if (caption) {
+              page.drawText(`▲ ${caption.slice(0, 48)}`, {
+                x: marginX,
+                y: cursorY,
+                size: 8.5,
+                font,
+                color: rgb(0.38, 0.42, 0.5),
+              });
+              cursorY -= 18;
+            }
+            continue;
+          } else if (caption) {
+            // SVG diagram caption reference in PDF
+            if (cursorY < 80) {
+              pageCount += 1;
+              page = pdfDoc.addPage([pageWidth, pageHeight]);
+              drawWatermarkChrome(page, pageCount);
+              cursorY = pageHeight - 72;
+            }
+            page.drawText(`【全彩視覺圖表】${caption}`, {
+              x: marginX,
+              y: cursorY,
+              size: 10,
+              font,
+              color: rgb(0.22, 0.26, 0.62),
+            });
+            cursorY -= 20;
+            continue;
+          }
+        }
+
+        // Skip Markdown table separator lines
+        if (/^\|?[\s:-]+\|/.test(trimmed)) {
+          continue;
+        }
+
+        const cleanedLine = inCode
+          ? `  ${raw}`
+          : trimmed
+              .replace(/^#{1,6}\s+/, '■ ')
+              .replace(/^>\s+/, '▎ ')
+              .replace(/\*\*(.*?)\*\*/g, '$1')
+              .replace(/`([^`]+)`/g, '$1')
+              .replace(/^\|/, '')
+              .replace(/\|$/, '')
+              .replace(/\|/g, ' ｜ ');
+
+        const isHeading = cleanedLine.startsWith('■ ');
+        const isQuote = cleanedLine.startsWith('▎ ');
+        const wrapped = wrapLineByWidth(cleanedLine, isHeading ? 54 : 62);
+
         for (const wLine of wrapped) {
-          if (cursorY < 68) {
+          if (cursorY < 66) {
             pageCount += 1;
             page = pdfDoc.addPage([pageWidth, pageHeight]);
             drawWatermarkChrome(page, pageCount);
-            cursorY = pageHeight - 76;
+            cursorY = pageHeight - 72;
           }
           if (wLine.length > 0) {
             page.drawText(wLine, {
               x: marginX,
               y: cursorY,
-              size: isHeading ? 12.5 : 10.5,
+              size: isHeading ? 12.5 : 10,
               font,
-              color: isHeading ? rgb(0.14, 0.2, 0.45) : rgb(0.18, 0.2, 0.24),
+              color: isHeading
+                ? rgb(0.14, 0.2, 0.48)
+                : isQuote
+                  ? rgb(0.18, 0.32, 0.55)
+                  : rgb(0.18, 0.2, 0.24),
             });
           }
-          cursorY -= isHeading ? 22 : 18;
+          cursorY -= isHeading ? 21 : 17;
         }
       }
     }

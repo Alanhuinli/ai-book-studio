@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420">
+  <rect width="960" height="420" rx="24" fill="#0f172a"/>
+
+  <rect x="40" y="28" width="156" height="28" rx="14" fill="#059669"/>
+  <text x="118" y="47" text-anchor="middle" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">圖解 03 · 短影音完播公式</text>
+  <text x="40" y="90" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="24" font-weight="800">Reels ／ Shorts 60 秒高完播率「秒級分鏡時間軸」</text>
+  <text x="40" y="116" fill="#94a3b8" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14">不用露臉、不用昂貴器材！每 3～5 秒切換一次視覺畫面（B-Roll），牢牢鎖住觀眾眼球</text>
+
+  <!-- Timeline Bar -->
+  <rect x="40" y="152" width="180" height="36" rx="8" fill="#ef4444"/>
+  <text x="130" y="175" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="14" font-weight="800">00s - 03s (黃金生死線)</text>
+
+  <rect x="230" y="152" width="210" height="36" rx="8" fill="#f59e0b"/>
+  <text x="335" y="175" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="14" font-weight="800">03s - 15s (痛點放大)</text>
+
+  <rect x="450" y="152" width="280" height="36" rx="8" fill="#6366f1"/>
+  <text x="590" y="175" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="14" font-weight="800">15s - 48s (三步核心乾貨展示)</text>
+
+  <rect x="740" y="152" width="180" height="36" rx="8" fill="#10b981"/>
+  <text x="830" y="175" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="14" font-weight="800">48s - 60s (導流收網)</text>
+
+  <!-- Detail Cards -->
+  <rect x="40" y="204" width="180" height="176" rx="14" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="56" y="234" fill="#fca5a5" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">視覺＋聽覺雙重破題</text>
+  <text x="56" y="264" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 禁止說「哈囉大家好」</text>
+  <text x="56" y="290" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 直接秀出成果對比畫面</text>
+  <text x="56" y="316" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 大字標題佔螢幕中上方</text>
+  <text x="56" y="352" fill="#f87171" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">目標：3秒留存率 &gt; 65%</text>
+
+  <rect x="230" y="204" width="210" height="176" rx="14" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="246" y="234" fill="#fcd34d" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">建立「不看會虧」急迫感</text>
+  <text x="246" y="264" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 點出舊方法的浪費時間處</text>
+  <text x="246" y="290" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 預告「最後一步最關鍵」</text>
+  <text x="246" y="316" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 搭配節奏音效轉場</text>
+  <text x="246" y="352" fill="#fbbf24" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">目標：鎖住滑動手指</text>
+
+  <rect x="450" y="204" width="280" height="176" rx="14" fill="#1e293b" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="468" y="234" fill="#a5b4fc" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">螢幕錄影／AI 畫面快節奏拆解</text>
+  <text x="468" y="264" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 剪除所有呼吸停頓氣口（零冷場）</text>
+  <text x="468" y="290" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 步驟 ① ② ③ 浮動進度條提示</text>
+  <text x="468" y="316" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 關鍵指令畫面刻意快閃引導按暫停</text>
+  <text x="468" y="352" fill="#818cf8" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">目標：衝高重播率與收藏數</text>
+
+  <rect x="740" y="204" width="180" height="176" rx="14" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="756" y="234" fill="#6ee7b7" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">單一明確行動呼籲</text>
+  <text x="756" y="264" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 只給 1 個指令（不貪心）</text>
+  <text x="756" y="290" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 「留言 +1 領取完整工具包」</text>
+  <text x="756" y="316" fill="#e2e8f0" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">• 主頁連結直通電子書坊</text>
+  <text x="756" y="352" fill="#34d399" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">目標：流量精準變現</text>
+</svg>

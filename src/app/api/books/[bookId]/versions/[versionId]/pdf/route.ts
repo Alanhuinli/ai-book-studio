@@ -49,7 +49,7 @@ export async function GET(
 
     const { data: book } = await supabase
       .from('books')
-      .select('id, slug, title, subtitle, author_name')
+      .select('id, slug, title, subtitle, author_name, cover_image_url')
       .eq('id', bookId)
       .single();
 
@@ -109,9 +109,15 @@ export async function GET(
       watermark_fingerprint: watermarkFingerprint,
     });
 
+    const siteOrigin =
+      process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ||
+      new URL(_request.url).origin;
+
     const pdfBytes = await generateWatermarkedBookPdf({
       bookTitle: book.title,
       bookSubtitle: book.subtitle,
+      coverImageUrl: book.cover_image_url,
+      siteOrigin,
       versionCode: version.version_code,
       authorName: book.author_name,
       readerEmail: user.email ?? profile?.email ?? 'reader',

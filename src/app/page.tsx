@@ -174,25 +174,38 @@ export default async function HomePage() {
               >
                 {/* Book Cover Banner */}
                 <div
-                  className={`relative bg-gradient-to-br ${book.cover_gradient} p-6 text-white`}
+                  className={`relative overflow-hidden bg-gradient-to-br ${book.cover_gradient} p-6 text-white`}
                 >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
-                      {book.category}
-                    </span>
-                    <span className="rounded-md bg-amber-400/20 border border-amber-300/40 px-2.5 py-0.5 text-xs font-bold text-amber-200">
-                      {book.cover_badge} · {latestVersion.version_code}
-                    </span>
-                  </div>
+                  {book.cover_image_url && (
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={book.cover_image_url}
+                        alt={book.title}
+                        className="absolute inset-0 h-full w-full object-cover opacity-45 mix-blend-luminosity transition duration-500 hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/65 to-indigo-950/40" />
+                    </>
+                  )}
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
+                        {book.category}
+                      </span>
+                      <span className="rounded-md bg-amber-400/20 border border-amber-300/40 px-2.5 py-0.5 text-xs font-bold text-amber-200">
+                        {book.cover_badge} · {latestVersion.version_code}
+                      </span>
+                    </div>
 
-                  <h3 className="mt-5 text-xl font-bold leading-snug">{book.title}</h3>
-                  <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-slate-200/90">
-                    {book.subtitle}
-                  </p>
+                    <h3 className="mt-5 text-xl font-bold leading-snug">{book.title}</h3>
+                    <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-slate-200/90">
+                      {book.subtitle}
+                    </p>
 
-                  <div className="mt-5 flex items-center justify-between border-t border-white/15 pt-3 text-xs text-slate-200">
-                    <span>作者：{book.author_name}</span>
-                    <span>約 {latestVersion.page_count} 頁 · 數位版</span>
+                    <div className="mt-5 flex items-center justify-between border-t border-white/15 pt-3 text-xs text-slate-200">
+                      <span>作者：{book.author_name}</span>
+                      <span>約 {latestVersion.page_count} 頁 · 數位版</span>
+                    </div>
                   </div>
                 </div>
 

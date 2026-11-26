@@ -93,6 +93,7 @@ export type Database = {
           category: string;
           cover_badge: string;
           cover_gradient: string;
+          cover_image_url: string | null;
           created_at: string;
           current_version_id: string | null;
           description: string;
@@ -112,6 +113,7 @@ export type Database = {
           category?: string;
           cover_badge?: string;
           cover_gradient?: string;
+          cover_image_url?: string | null;
           created_at?: string;
           current_version_id?: string | null;
           description: string;
@@ -131,6 +133,7 @@ export type Database = {
           category?: string;
           cover_badge?: string;
           cover_gradient?: string;
+          cover_image_url?: string | null;
           created_at?: string;
           current_version_id?: string | null;
           description?: string;

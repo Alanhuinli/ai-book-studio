@@ -117,38 +117,51 @@ export default async function BookDetailPage({
         {/* Left Column: Book Content & Chapters */}
         <div className="space-y-8 lg:col-span-7">
           <div
-            className={`rounded-3xl bg-gradient-to-br ${book.cover_gradient} p-8 text-white shadow-lg sm:p-10`}
+            className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${book.cover_gradient} p-8 text-white shadow-lg sm:p-10`}
           >
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
-                {book.category}
-              </span>
-              <span className="rounded-full border border-amber-300/40 bg-amber-400/20 px-3 py-1 text-xs font-bold text-amber-200">
-                當前發行版本：{latestVersion.version_code}
-              </span>
-            </div>
+            {book.cover_image_url && (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={book.cover_image_url}
+                  alt={book.title}
+                  className="absolute inset-0 h-full w-full object-cover opacity-40"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/65 to-indigo-950/40" />
+              </>
+            )}
+            <div className="relative z-10">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+                  {book.category}
+                </span>
+                <span className="rounded-full border border-amber-300/40 bg-amber-400/20 px-3 py-1 text-xs font-bold text-amber-200">
+                  當前發行版本：{latestVersion.version_code}
+                </span>
+              </div>
 
-            <h1 className="mt-5 text-2xl font-extrabold leading-tight sm:text-4xl">
-              {book.title}
-            </h1>
-            <p className="mt-3 text-sm leading-relaxed text-slate-200 sm:text-base">
-              {book.subtitle}
-            </p>
+              <h1 className="mt-5 text-2xl font-extrabold leading-tight sm:text-4xl">
+                {book.title}
+              </h1>
+              <p className="mt-3 text-sm leading-relaxed text-slate-200 sm:text-base">
+                {book.subtitle}
+              </p>
 
-            <div className="mt-6 flex flex-wrap items-center gap-5 border-t border-white/15 pt-5 text-xs text-slate-200">
-              <span>作者：{book.author_name}</span>
-              <span>頁數規模：約 {latestVersion.page_count} 頁</span>
-              <span>呈現格式：線上防拷閱讀器 ＋ 動態個人浮水印 PDF</span>
-            </div>
+              <div className="mt-6 flex flex-wrap items-center gap-5 border-t border-white/15 pt-5 text-xs text-slate-200">
+                <span>作者：{book.author_name}</span>
+                <span>頁數規模：約 {latestVersion.page_count} 頁</span>
+                <span>呈現格式：全彩圖解線上閱讀器 ＋ 動態個人浮水印 PDF</span>
+              </div>
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href={`/reader/${book.slug}/${latestVersion.version_code}`}
-                className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs font-bold text-slate-900 shadow-sm transition hover:bg-slate-100"
-              >
-                <BookOpen className="h-4 w-4 text-indigo-600" />
-                <span>免費線上試讀第 1 章（{latestVersion.version_code}）</span>
-              </Link>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link
+                  href={`/reader/${book.slug}/${latestVersion.version_code}`}
+                  className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs font-bold text-slate-900 shadow-sm transition hover:bg-slate-100"
+                >
+                  <BookOpen className="h-4 w-4 text-indigo-600" />
+                  <span>免費線上試讀第 1 章（全彩圖解版 {latestVersion.version_code}）</span>
+                </Link>
+              </div>
             </div>
           </div>
 

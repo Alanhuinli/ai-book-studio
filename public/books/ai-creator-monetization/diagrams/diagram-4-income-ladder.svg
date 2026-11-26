@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440">
+  <rect width="960" height="440" rx="24" fill="#fffbeb" stroke="#fde68a" stroke-width="2"/>
+
+  <rect x="40" y="28" width="156" height="28" rx="14" fill="#d97706"/>
+  <text x="118" y="47" text-anchor="middle" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">圖解 04 · 變現商業階梯</text>
+  <text x="40" y="90" fill="#1e293b" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="24" font-weight="800">小帳號也能高獲利！一人自媒體「三階變現階梯」全圖解</text>
+  <text x="40" y="116" fill="#64748b" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14">不必苦等十萬粉絲靠微薄流量分成！擁有 500 位精準鐵粉就能啟動高毛利變現引擎</text>
+
+  <!-- Step 1 Card -->
+  <rect x="48" y="236" width="272" height="168" rx="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="68" y="254" width="110" height="24" rx="12" fill="#f1f5f9"/>
+  <text x="123" y="270" text-anchor="middle" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="11" font-weight="700">第 1 階｜0～1,000 粉</text>
+  <text x="68" y="304" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="19" font-weight="800">AI 工具＆好物聯盟分潤</text>
+  <text x="68" y="334" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">分享實測好用的 AI 軟體與設備連結，</text>
+  <text x="68" y="356" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">讀者訂閱即享 20%~30% 持續分潤。</text>
+  <text x="68" y="386" fill="#0284c7" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13" font-weight="800">預估月增收入：NT$ 3,000 ~ 15,000</text>
+
+  <!-- Step 2 Card -->
+  <rect x="344" y="190" width="272" height="214" rx="18" fill="#ffffff" stroke="#818cf8" stroke-width="2"/>
+  <rect x="364" y="208" width="126" height="24" rx="12" fill="#e0e7ff"/>
+  <text x="427" y="224" text-anchor="middle" fill="#4338ca" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="11" font-weight="700">第 2 階｜1,000～5,000 粉</text>
+  <text x="364" y="258" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="19" font-weight="800">精準品牌業配＆輕諮詢</text>
+  <text x="364" y="290" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">垂直領域高互動帳號最受廠商青睞，</text>
+  <text x="364" y="312" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">單篇深度開箱＋1對1陪跑快速放大現金流。</text>
+  <text x="364" y="386" fill="#4f46e5" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13" font-weight="800">預估月增收入：NT$ 15,000 ~ 45,000</text>
+
+  <!-- Step 3 Card -->
+  <rect x="640" y="142" width="272" height="262" rx="18" fill="#1e1b4b" stroke="#f59e0b" stroke-width="2.5"/>
+  <rect x="660" y="162" width="146" height="26" rx="13" fill="#f59e0b"/>
+  <text x="733" y="179" text-anchor="middle" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="11.5" font-weight="800">第 3 階｜黃金護城河（95%毛利）</text>
+  <text x="660" y="216" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="20" font-weight="800">自有原創電子書＆模板</text>
+  <text x="660" y="250" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 零邊際成本，寫一次賣一萬次</text>
+  <text x="660" y="276" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 自建書坊免被平台抽成 30%~50%</text>
+  <text x="660" y="302" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 搭配「老訂戶 1/10 改版升級」長尾複利</text>
+  <rect x="660" y="354" width="232" height="34" rx="10" fill="#312e81"/>
+  <text x="776" y="376" text-anchor="middle" fill="#fbbf24" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13.5" font-weight="800">目標月被動營收：NT$ 50,000 ~ 150,000+</text>
+</svg>

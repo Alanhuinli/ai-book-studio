@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460">
+  <rect width="960" height="460" rx="24" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- Header -->
+  <rect x="40" y="28" width="148" height="28" rx="14" fill="#e0e7ff"/>
+  <text x="114" y="47" text-anchor="middle" fill="#4338ca" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="800">圖解 02 · 爆文解剖學</text>
+  <text x="40" y="90" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="24" font-weight="800">Threads ＆ IG 破萬觸及「黃金四段式」文案結構漏斗</text>
+  <text x="40" y="116" fill="#64748b" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14">決定貼文生死的永遠是前兩行！套用此公式讓演算法主動把你推上陌生人首頁</text>
+
+  <!-- Layer 1 -->
+  <rect x="60" y="142" width="840" height="64" rx="14" fill="#4f46e5"/>
+  <text x="92" y="170" fill="#c7d2fe" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">第 1 段：黃金前 2 行（停留率 80% 關鍵）</text>
+  <text x="92" y="193" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="17" font-weight="800">反常識鉤子 ＋ 具體數字結果：「為什麼日更的人賺不到錢？我每週只花 5 小時反而月增 4 萬…」</text>
+
+  <!-- Layer 2 -->
+  <rect x="110" y="218" width="740" height="64" rx="14" fill="#6366f1"/>
+  <text x="142" y="246" fill="#e0e7ff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">第 2 段：痛點場景共鳴（引發「這就是在說我！」）</text>
+  <text x="142" y="269" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="16" font-weight="700">點破讀者踩過的坑：「多數人下班打開電腦發呆 2 小時，寫出沒人看的日記文就放棄…」</text>
+
+  <!-- Layer 3 -->
+  <rect x="160" y="294" width="640" height="68" rx="14" fill="#0ea5e9"/>
+  <text x="192" y="322" fill="#e0f2fe" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">第 3 段：高密度條列乾貨（衝高「收藏率」權重最高指標）</text>
+  <text x="192" y="346" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="16" font-weight="700">給出立即可用的 3 個步驟清單（① 痛點選題 → ② 口語提示詞 → ③ 變現鉤子）</text>
+
+  <!-- Layer 4 -->
+  <rect x="220" y="374" width="520" height="60" rx="14" fill="#f59e0b"/>
+  <text x="252" y="400" fill="#fef3c7" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">第 4 段：零門檻互動誘餌（引爆留言區演算法推流）</text>
+  <text x="252" y="422" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="16" font-weight="800">「留言『副業』，我把這組 AI 爆文提示詞模板直接傳給你！」</text>
+</svg>
