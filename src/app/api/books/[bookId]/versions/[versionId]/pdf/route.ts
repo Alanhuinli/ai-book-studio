@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import fs from 'fs/promises';
+import path from 'path';
 import { NextResponse } from 'next/server';
 import { metric } from '@vercel/functions';
 import { createClient } from '@/lib/supabase/server';
@@ -91,6 +93,18 @@ export async function GET(
         .download(version.pdf_storage_path);
       if (pdfBlob) {
         existingPdfBytes = new Uint8Array(await pdfBlob.arrayBuffer());
+      }
+    } else {
+      const bundledMasterPath = path.join(
+        process.cwd(),
+        'private-ebooks',
+        `${book.slug}-${version.version_code}.pdf`
+      );
+      try {
+        const buf = await fs.readFile(bundledMasterPath);
+        existingPdfBytes = new Uint8Array(buf);
+      } catch {
+        // Fallback to dynamic chapter typesetting when no bundled master PDF exists
       }
     }
 
