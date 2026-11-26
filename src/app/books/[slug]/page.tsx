@@ -159,7 +159,11 @@ export default async function BookDetailPage({
                   className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs font-bold text-slate-900 shadow-sm transition hover:bg-slate-100"
                 >
                   <BookOpen className="h-4 w-4 text-indigo-600" />
-                  <span>免費線上試讀第 1 章（全彩圖解版 {latestVersion.version_code}）</span>
+                  <span>
+                    {book.is_free_full_book
+                      ? `免費線上閱讀全書（全彩圖解版 ${latestVersion.version_code}）`
+                      : `免費線上試讀第 1 章（全彩圖解版 ${latestVersion.version_code}）`}
+                  </span>
                 </Link>
               </div>
             </div>
@@ -228,10 +232,10 @@ export default async function BookDetailPage({
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      {ch.is_free_preview ? (
+                      {ch.is_free_preview || book.is_free_full_book ? (
                         <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-700">
                           <Unlock className="h-3 w-3" />
-                          免費試讀
+                          {book.is_free_full_book ? '全書免費開放' : '免費試讀'}
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600">
@@ -249,12 +253,12 @@ export default async function BookDetailPage({
                       <Clock className="h-3.5 w-3.5" />
                       {ch.estimated_minutes} 分鐘
                     </span>
-                    {ch.is_free_preview && (
+                    {(ch.is_free_preview || book.is_free_full_book) && (
                       <Link
                         href={`/reader/${book.slug}/${latestVersion.version_code}?chapter=${ch.chapter_number}`}
                         className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-100"
                       >
-                        立即試讀
+                        立即閱讀
                       </Link>
                     )}
                   </div>
@@ -307,6 +311,7 @@ export default async function BookDetailPage({
               bookSlug={book.slug}
               bookTitle={book.title}
               isLoggedIn={Boolean(user)}
+              isFreeFullBook={book.is_free_full_book}
               paymentMode={settings?.payment_mode ?? 'sandbox'}
               versionQuotes={versionQuotes}
             />

@@ -11,6 +11,7 @@ import {
   Eye,
   EyeOff,
   FileUp,
+  Gift,
   Layers,
   Loader2,
   Plus,
@@ -488,6 +489,34 @@ export function AdminDashboardClient({
     }
   };
 
+  const handleToggleFreeBookMode = async (book: Tables<'books'>) => {
+    setBusy(true);
+    try {
+      const supabase = createClient();
+      const nextFree = !book.is_free_full_book;
+      const { error } = await supabase
+        .from('books')
+        .update({
+          is_free_full_book: nextFree,
+          cover_badge: nextFree ? '限時全書免費試閱' : 'AI 實戰專書',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', book.id);
+      if (error) throw error;
+      notify(
+        'ok',
+        nextFree
+          ? `《${book.title}》已切換為「全書免費開放試閱 ＋ 會員免費領取 PDF」模式！`
+          : `《${book.title}》已恢復為「單本原價收費（僅開放試讀章節）」模式！`
+      );
+      router.refresh();
+    } catch (err) {
+      notify('err', err instanceof Error ? err.message : '切換免費試閱模式失敗');
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const handleDeleteBook = async (book: Tables<'books'>) => {
     setBusy(true);
     try {
@@ -696,6 +725,12 @@ export function AdminDashboardClient({
                         <span className="rounded bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold text-indigo-700">
                           {b.category}
                         </span>
+                        {b.is_free_full_book && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-teal-100 px-2.5 py-0.5 text-[11px] font-bold text-teal-800">
+                            <Gift className="h-3 w-3" />
+                            全書免費開放中
+                          </span>
+                        )}
                         <h3 className="text-sm font-bold text-slate-900 sm:text-base">
                           {b.title}
                         </h3>
@@ -722,6 +757,24 @@ export function AdminDashboardClient({
                         <ExternalLink className="h-3.5 w-3.5" />
                         <span>預覽頁面</span>
                       </Link>
+
+                      <button
+                        type="button"
+                        disabled={busy}
+                        onClick={() => handleToggleFreeBookMode(b)}
+                        className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold transition disabled:opacity-60 ${
+                          b.is_free_full_book
+                            ? 'border border-indigo-200 bg-indigo-50 text-indigo-800 hover:bg-indigo-100'
+                            : 'border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+                        }`}
+                      >
+                        <Gift className="h-3.5 w-3.5" />
+                        <span>
+                          {b.is_free_full_book
+                            ? `恢復收費 (${latestVer ? formatTwd(latestVer.list_price_twd) : '原價'})`
+                            : '設為全書免費'}
+                        </span>
+                      </button>
 
                       <button
                         type="button"

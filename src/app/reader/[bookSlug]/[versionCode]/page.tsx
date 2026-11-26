@@ -116,7 +116,7 @@ export default async function ReaderPage({
         title: c.title,
         previewExcerpt: c.preview_excerpt,
         estimatedMinutes: c.estimated_minutes,
-        isFreePreview: c.is_free_preview,
+        isFreePreview: c.is_free_preview || book.is_free_full_book,
         contentMarkdown: contentMap.get(c.id) ?? null,
       }))}
       initialChapterNumber={initialChapterNumber}

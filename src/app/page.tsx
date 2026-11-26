@@ -250,6 +250,25 @@ export default async function HomePage() {
                           定價 {formatTwd(latestVersion.list_price_twd)}
                         </span>
                       </div>
+                    ) : book.is_free_full_book ? (
+                      <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50/80 p-3">
+                        <div className="flex items-baseline justify-between">
+                          <span className="text-xs font-bold text-emerald-900">
+                            🎁 限時全書免費開放試閱（全部章節解鎖）
+                          </span>
+                          <span className="text-xs text-slate-400 line-through">
+                            原定價 {formatTwd(latestVersion.list_price_twd)}
+                          </span>
+                        </div>
+                        <div className="mt-1 flex items-baseline gap-2">
+                          <span className="text-2xl font-extrabold text-emerald-700">
+                            NT$ 0 免費試閱
+                          </span>
+                          <span className="text-xs text-emerald-800">
+                            （註冊會員免費領取 PDF）
+                          </span>
+                        </div>
+                      </div>
                     ) : upgradePrice !== null && priorEnt?.ver ? (
                       <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-3">
                         <div className="flex items-baseline justify-between">
@@ -290,17 +309,27 @@ export default async function HomePage() {
                         href={`/reader/${book.slug}/${latestVersion.version_code}`}
                         className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
                       >
-                        {ownsLatest ? '立即閱讀' : '免費試讀第 1 章'}
+                        {ownsLatest
+                          ? '立即閱讀'
+                          : book.is_free_full_book
+                            ? '免費讀完全書'
+                            : '免費試讀第 1 章'}
                       </Link>
                       <Link
                         href={`/books/${book.slug}`}
-                        className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
+                        className={`inline-flex items-center justify-center rounded-xl px-3 py-2.5 text-sm font-semibold text-white transition ${
+                          book.is_free_full_book && !ownsLatest
+                            ? 'bg-emerald-600 hover:bg-emerald-700'
+                            : 'bg-indigo-600 hover:bg-indigo-700'
+                        }`}
                       >
                         {ownsLatest
                           ? '書籍詳情'
-                          : upgradePrice !== null
-                            ? `升級購書 ${formatTwd(upgradePrice)}`
-                            : '查看詳情與購書'}
+                          : book.is_free_full_book
+                            ? '免費領取入書櫃'
+                            : upgradePrice !== null
+                              ? `升級購書 ${formatTwd(upgradePrice)}`
+                              : '查看詳情與購書'}
                       </Link>
                     </div>
                   </div>

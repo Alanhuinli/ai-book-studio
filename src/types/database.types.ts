@@ -99,6 +99,7 @@ export type Database = {
           description: string;
           highlights: string[];
           id: string;
+          is_free_full_book: boolean;
           is_published: boolean;
           slug: string;
           sort_order: number;
@@ -119,6 +120,7 @@ export type Database = {
           description: string;
           highlights?: string[];
           id?: string;
+          is_free_full_book?: boolean;
           is_published?: boolean;
           slug: string;
           sort_order?: number;
@@ -139,6 +141,7 @@ export type Database = {
           description?: string;
           highlights?: string[];
           id?: string;
+          is_free_full_book?: boolean;
           is_published?: boolean;
           slug?: string;
           sort_order?: number;

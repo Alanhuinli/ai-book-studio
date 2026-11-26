@@ -7,6 +7,7 @@ import {
   Building2,
   CheckCircle2,
   CreditCard,
+  Gift,
   Landmark,
   Loader2,
   Receipt,
@@ -29,6 +30,7 @@ export function CheckoutPanel({
   bookSlug,
   bookTitle,
   isLoggedIn,
+  isFreeFullBook = false,
   paymentMode,
   versionQuotes,
 }: {
@@ -36,6 +38,7 @@ export function CheckoutPanel({
   bookSlug: string;
   bookTitle: string;
   isLoggedIn: boolean;
+  isFreeFullBook?: boolean;
   paymentMode: string;
   versionQuotes: VersionQuoteItem[];
 }) {
@@ -67,6 +70,37 @@ export function CheckoutPanel({
   }
 
   const { quote } = activeItem;
+
+  const handleClaimFreeBook = async () => {
+    setError(null);
+    if (!isLoggedIn) {
+      router.push(
+        `/login?tab=signup&next=${encodeURIComponent(`/books/${bookSlug}`)}`
+      );
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/orders/claim-free', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bookId,
+          bookVersionId: activeItem.id,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || '免費領取失敗');
+      }
+      router.push('/bookshelf');
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '領取發生錯誤');
+      setSubmitting(false);
+    }
+  };
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -211,6 +245,54 @@ export function CheckoutPanel({
                 下載個人浮水印 PDF
               </a>
             </div>
+          </div>
+        ) : isFreeFullBook ? (
+          <div className="space-y-4">
+            <div className="rounded-xl border border-emerald-300 bg-gradient-to-br from-emerald-50 to-teal-50 p-5">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-900">
+                <Gift className="h-4 w-4 text-emerald-600" />
+                <span>限時全書免費開放試閱（免綁卡、免付款）</span>
+              </div>
+              <div className="mt-2 flex items-baseline gap-2.5">
+                <span className="text-3xl font-extrabold text-emerald-700">
+                  NT$ 0
+                </span>
+                <span className="text-xs text-slate-400 line-through">
+                  原定價 {formatTwd(quote.list_price_twd)}
+                </span>
+              </div>
+              <p className="mt-2 text-xs leading-relaxed text-emerald-900/85">
+                本書全數章節已對外免費解鎖閱讀！免費註冊／登入會員即可一鍵永久收入個人數位書櫃，並下載您的專屬個人浮水印全彩 PDF。
+              </p>
+            </div>
+
+            {error && (
+              <div className="flex items-start gap-2 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-800">
+                <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-rose-600" />
+                <span>{error}</span>
+              </div>
+            )}
+
+            <Link
+              href={`/reader/${bookSlug}/${activeItem.version_code}`}
+              className="inline-flex w-full items-center justify-center rounded-xl border border-emerald-300 bg-white px-5 py-3 text-sm font-bold text-emerald-800 transition hover:bg-emerald-50"
+            >
+              免登入直接線上讀完全書（共 10 章）
+            </Link>
+
+            <button
+              type="button"
+              disabled={submitting}
+              onClick={handleClaimFreeBook}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3.5 text-sm font-bold text-white shadow-md shadow-emerald-600/20 transition hover:bg-emerald-700 disabled:opacity-60"
+            >
+              {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
+              <span>
+                {isLoggedIn
+                  ? '🎁 一鍵免費收入書櫃並解鎖 PDF 下載'
+                  : '🎁 免費註冊會員以領取全書 PDF 入書櫃'}
+              </span>
+            </button>
           </div>
         ) : (
           <form onSubmit={handleCheckout} className="space-y-5">
