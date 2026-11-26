@@ -39,17 +39,9 @@ export async function GET(
       .eq('status', 'active')
       .maybeSingle();
 
-    if (!entitlement && !isAdmin) {
-      metric('ebook.pdf_downloaded', 1, { outcome: 'forbidden' });
-      return NextResponse.json(
-        { error: '您尚未購買此電子書版本的授權，無法下載完整 PDF' },
-        { status: 403 }
-      );
-    }
-
     const { data: book } = await supabase
       .from('books')
-      .select('id, slug, title, subtitle, author_name, cover_image_url')
+      .select('id, slug, title, subtitle, author_name, cover_image_url, is_free_full_book, is_published')
       .eq('id', bookId)
       .single();
 
@@ -62,6 +54,16 @@ export async function GET(
 
     if (!book || !version) {
       return NextResponse.json({ error: '找不到指定的書籍或版本' }, { status: 404 });
+    }
+
+    const canAccessFreeBook = Boolean(book.is_published && book.is_free_full_book);
+
+    if (!entitlement && !isAdmin && !canAccessFreeBook) {
+      metric('ebook.pdf_downloaded', 1, { outcome: 'forbidden' });
+      return NextResponse.json(
+        { error: '您尚未購買此電子書版本的授權，無法下載完整 PDF' },
+        { status: 403 }
+      );
     }
 
     const { data: chaptersMeta } = await supabase

@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { PDFDocument, StandardFonts, rgb, degrees } from 'pdf-lib';
+import { PDFDocument, StandardFonts, rgb, degrees, type PDFFont } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 
 export interface WatermarkPdfInput {
@@ -20,6 +20,21 @@ export interface WatermarkPdfInput {
     contentMarkdown: string;
   }>;
   existingPdfBytes?: Uint8Array | null;
+}
+
+const TRUETYPE_UA = 'Mozilla/5.0 (Linux; U; Android 2.2) AppleWebKit/533.1';
+
+function sanitizeForPdfFont(input: string): string {
+  return input
+    .replace(/💡/g, '【觀念】')
+    .replace(/🔥/g, '【重點】')
+    .replace(/⚠️?/g, '【注意】')
+    .replace(/✅/g, '[V] ')
+    .replace(/❌/g, '[X] ')
+    .replace(/⭐/g, '★')
+    .replace(/📋|🎁|👉|🙌|😊/g, '▶ ')
+    .replace(/[\uD800-\uDFFF]/g, '')
+    .replace(/[\uFE00-\uFE0F\u200D]/g, '');
 }
 
 async function loadImageBytes(
@@ -42,7 +57,7 @@ async function loadImageBytes(
       } catch {
         if (siteOrigin) {
           const res = await fetch(`${siteOrigin}${cleanPath}`, {
-            signal: AbortSignal.timeout(6000),
+            signal: AbortSignal.timeout(5000),
           });
           if (res.ok) {
             return { bytes: new Uint8Array(await res.arrayBuffer()), format };
@@ -53,7 +68,7 @@ async function loadImageBytes(
     }
 
     if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://')) {
-      const res = await fetch(srcUrl, { signal: AbortSignal.timeout(6000) });
+      const res = await fetch(srcUrl, { signal: AbortSignal.timeout(5000) });
       if (res.ok) {
         return { bytes: new Uint8Array(await res.arrayBuffer()), format };
       }
@@ -64,20 +79,23 @@ async function loadImageBytes(
   }
 }
 
-async function fetchSubsetTraditionalChineseFont(
-  textToRender: string
-): Promise<Uint8Array | null> {
+/**
+ * Fetches an ultra-lightweight (~20-50 KB) TrueType (.ttf) subset from Google Fonts
+ * by keeping each character set under ~420 unique characters.
+ */
+async function fetchCompactTtfSubset(textSample: string): Promise<Uint8Array | null> {
   try {
-    const uniqueChars = Array.from(new Set(textToRender.replace(/\s+/g, ''))).join('');
+    const safeSample = sanitizeForPdfFont(textSample).replace(/\s+/g, '');
+    const uniqueChars = Array.from(new Set(safeSample)).join('').slice(0, 420);
+    if (!uniqueChars) return null;
+
     const cssUrl = `https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&text=${encodeURIComponent(
-      uniqueChars.slice(0, 3500)
+      uniqueChars
     )}`;
 
     const cssRes = await fetch(cssUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; rv:27.0) Gecko/20100101 Firefox/27.0',
-      },
-      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': TRUETYPE_UA },
+      signal: AbortSignal.timeout(5000),
     });
 
     if (!cssRes.ok) return null;
@@ -86,12 +104,11 @@ async function fetchSubsetTraditionalChineseFont(
     if (!match?.[1]) return null;
 
     const fontRes = await fetch(match[1], {
-      signal: AbortSignal.timeout(8000),
+      signal: AbortSignal.timeout(5000),
     });
     if (!fontRes.ok) return null;
 
-    const buf = await fontRes.arrayBuffer();
-    return new Uint8Array(buf);
+    return new Uint8Array(await fontRes.arrayBuffer());
   } catch {
     return null;
   }
@@ -123,25 +140,36 @@ function wrapLineByWidth(text: string, maxCharsPerLine: number): string[] {
 export async function generateWatermarkedBookPdf(
   input: WatermarkPdfInput
 ): Promise<Uint8Array> {
-  const allTextSample = [
-    input.bookTitle,
-    input.bookSubtitle,
+  const cleanTitle = sanitizeForPdfFont(input.bookTitle);
+  const cleanSubtitle = sanitizeForPdfFont(input.bookSubtitle);
+  const cleanAuthor = sanitizeForPdfFont(input.authorName);
+  const sanitizedChapters = input.chapters.map((c) => ({
+    ...c,
+    title: sanitizeForPdfFont(c.title),
+    contentMarkdown: sanitizeForPdfFont(c.contentMarkdown),
+  }));
+
+  const chromeBaseSample = [
+    cleanTitle,
+    cleanSubtitle,
     input.versionCode,
-    input.authorName,
+    cleanAuthor,
     input.readerEmail,
-    input.readerName,
+    sanitizeForPdfFont(input.readerName),
     input.watermarkFingerprint,
-    "艾倫數位書坊 Alan's AI Press 專屬授權電子書 嚴禁未經授權公開轉載散佈或轉售 第頁 授權訂戶 數位指紋 圖解 ▲ ■",
-    ...input.chapters.map((c) => `${c.title}\n${c.contentMarkdown}`),
-  ].join('\n');
+    input.downloadedAtIso,
+    "艾倫數位書坊 ALAN'S AI PRESS 全彩圖解實戰電子書 發行版本 作者 個人專屬數位版權與動態浮水印憑證 授權帳號 數位浮水印指紋 簽發時間 本電子書檔案僅供購買本人離線閱讀使用，每頁均內嵌個人授權編號，請勿公開上傳或轉散佈。授權訂戶 嚴禁未經授權公開轉載散佈 第頁 專屬授權 授權予 防盜版保護 全彩視覺圖表 觀念 重點 注意 ★ ▶ ▲ ■ ▎ ｜ ()[]0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz:.-_/@#",
+  ].join('');
 
-  const cjkFontBytes = await fetchSubsetTraditionalChineseFont(allTextSample);
-
+  // Case A: Stamp personal watermark onto an existing master PDF
   if (input.existingPdfBytes && input.existingPdfBytes.byteLength > 0) {
+    const stampFontBytes = await fetchCompactTtfSubset(chromeBaseSample);
     const pdfDoc = await PDFDocument.load(input.existingPdfBytes);
     pdfDoc.registerFontkit(fontkit);
     const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const customFont = cjkFontBytes ? await pdfDoc.embedFont(cjkFontBytes) : null;
+    const customFont = stampFontBytes
+      ? await pdfDoc.embedFont(stampFontBytes)
+      : null;
 
     const pages = pdfDoc.getPages();
     const asciiStamp = `Licensed to: ${input.readerEmail} | ID: ${input.watermarkFingerprint} | Alan's AI Press`;
@@ -182,19 +210,59 @@ export async function generateWatermarkedBookPdf(
     return await pdfDoc.save();
   }
 
-  // Dynamically typeset full illustrated e-book PDF with personal watermark
+  // Case B: Parallel-load compact per-chapter TTF subsets (~35KB each) & illustrations
+  const imageUrls = new Set<string>();
+  if (input.coverImageUrl) {
+    imageUrls.add(input.coverImageUrl);
+  }
+  for (const ch of sanitizedChapters) {
+    for (const line of ch.contentMarkdown.split('\n')) {
+      const m = line.trim().match(/^!\[.*?\]\((.*?)\)$/);
+      if (m?.[1]) imageUrls.add(m[1]);
+    }
+  }
+
+  const [chromeFontBytes, chapterFontBytesList, loadedImagesEntries] =
+    await Promise.all([
+      fetchCompactTtfSubset(chromeBaseSample),
+      Promise.all(
+        sanitizedChapters.map((ch) =>
+          fetchCompactTtfSubset(
+            `全彩視覺圖表觀念重點注意★▶▲■▎｜0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz()[]+-*/%:.,!?~${ch.title}${ch.contentMarkdown}`
+          )
+        )
+      ),
+      Promise.all(
+        Array.from(imageUrls).map(async (u) => {
+          const res = await loadImageBytes(u, input.siteOrigin);
+          return [u, res] as const;
+        })
+      ),
+    ]);
+
+  const imageCache = new Map(loadedImagesEntries);
+
   const pdfDoc = await PDFDocument.create();
   pdfDoc.registerFontkit(fontkit);
   const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const helveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-  const font = cjkFontBytes ? await pdfDoc.embedFont(cjkFontBytes) : helvetica;
+  const chromeFont: PDFFont = chromeFontBytes
+    ? await pdfDoc.embedFont(chromeFontBytes)
+    : helvetica;
 
-  pdfDoc.setTitle(`${input.bookTitle} (${input.versionCode})`);
-  pdfDoc.setAuthor(input.authorName);
+  const chapterFonts: PDFFont[] = [];
+  for (const cfBytes of chapterFontBytesList) {
+    chapterFonts.push(
+      cfBytes ? await pdfDoc.embedFont(cfBytes) : chromeFont
+    );
+  }
+
+  pdfDoc.setTitle(`${cleanTitle} (${input.versionCode})`);
+  pdfDoc.setAuthor(cleanAuthor);
   pdfDoc.setSubject(`Licensed to ${input.readerEmail} [${input.watermarkFingerprint}]`);
   pdfDoc.setProducer("Alan's AI Press Dynamic Illustrated Watermark Engine");
 
-  const pageWidth = 595.28; // A4
+  const pageWidth = 595.28;
   const pageHeight = 841.89;
   const marginX = 52;
   const contentWidth = pageWidth - marginX * 2;
@@ -203,14 +271,14 @@ export async function generateWatermarkedBookPdf(
     page: ReturnType<typeof pdfDoc.addPage>,
     pageNumber: number
   ) => {
-    if (cjkFontBytes) {
+    if (chromeFontBytes) {
       page.drawText(
-        `艾倫數位書坊 Alan's AI Press ｜ ${input.bookTitle} (${input.versionCode})`,
+        `艾倫數位書坊 Alan's AI Press ｜ ${cleanTitle} (${input.versionCode})`,
         {
           x: marginX,
           y: pageHeight - 34,
           size: 8.5,
-          font,
+          font: chromeFont,
           color: rgb(0.42, 0.45, 0.52),
         }
       );
@@ -220,7 +288,7 @@ export async function generateWatermarkedBookPdf(
           x: marginX,
           y: 24,
           size: 8,
-          font,
+          font: chromeFont,
           color: rgb(0.45, 0.45, 0.5),
         }
       );
@@ -228,7 +296,7 @@ export async function generateWatermarkedBookPdf(
         x: pageWidth - marginX - 42,
         y: 24,
         size: 8,
-        font,
+        font: chromeFont,
         color: rgb(0.45, 0.45, 0.5),
       });
       page.drawText(
@@ -237,7 +305,7 @@ export async function generateWatermarkedBookPdf(
           x: 88,
           y: 260,
           size: 19,
-          font,
+          font: chromeFont,
           color: rgb(0.35, 0.38, 0.55),
           rotate: degrees(34),
           opacity: 0.09,
@@ -257,7 +325,6 @@ export async function generateWatermarkedBookPdf(
     }
   };
 
-  // Cover Page
   let pageCount = 1;
   const cover = pdfDoc.addPage([pageWidth, pageHeight]);
   cover.drawRectangle({
@@ -268,42 +335,41 @@ export async function generateWatermarkedBookPdf(
     color: rgb(0.09, 0.11, 0.24),
   });
 
-  if (cjkFontBytes) {
+  if (chromeFontBytes) {
     cover.drawText("艾倫數位書坊 ALAN'S AI PRESS · 全彩圖解實戰電子書", {
       x: marginX,
       y: pageHeight - 72,
       size: 10.5,
-      font,
+      font: chromeFont,
       color: rgb(0.72, 0.78, 0.98),
     });
-    const titleLines = wrapLineByWidth(input.bookTitle, 34);
+    const titleLines = wrapLineByWidth(cleanTitle, 34);
     let ty = pageHeight - 116;
     for (const tl of titleLines) {
       cover.drawText(tl, {
         x: marginX,
         y: ty,
         size: 22,
-        font,
+        font: chromeFont,
         color: rgb(1, 1, 1),
       });
       ty -= 31;
     }
-    const subLines = wrapLineByWidth(input.bookSubtitle, 56);
+    const subLines = wrapLineByWidth(cleanSubtitle, 56);
     for (const sl of subLines) {
       cover.drawText(sl, {
         x: marginX,
         y: ty - 2,
         size: 11.5,
-        font,
+        font: chromeFont,
         color: rgb(0.84, 0.88, 0.96),
       });
       ty -= 18;
     }
 
-    // Embed Cover Illustration if present
     let coverArtBottomY = pageHeight - 270;
     if (input.coverImageUrl) {
-      const imgData = await loadImageBytes(input.coverImageUrl, input.siteOrigin);
+      const imgData = imageCache.get(input.coverImageUrl) ?? null;
       if (imgData) {
         const embedded =
           imgData.format === 'png'
@@ -321,11 +387,11 @@ export async function generateWatermarkedBookPdf(
       }
     }
 
-    cover.drawText(`發行版本：${input.versionCode}　｜　作者：${input.authorName}`, {
+    cover.drawText(`發行版本：${input.versionCode}　｜　作者：${cleanAuthor}`, {
       x: marginX,
       y: Math.max(265, coverArtBottomY - 12),
       size: 11.5,
-      font,
+      font: chromeFont,
       color: rgb(0.18, 0.2, 0.26),
     });
 
@@ -342,28 +408,28 @@ export async function generateWatermarkedBookPdf(
       x: marginX + 18,
       y: 208,
       size: 11.5,
-      font,
+      font: chromeFont,
       color: rgb(0.16, 0.2, 0.48),
     });
     cover.drawText(`授權帳號：${input.readerEmail}`, {
       x: marginX + 18,
       y: 182,
       size: 10,
-      font,
+      font: chromeFont,
       color: rgb(0.2, 0.22, 0.28),
     });
     cover.drawText(`數位浮水印指紋：${input.watermarkFingerprint}`, {
       x: marginX + 18,
       y: 161,
       size: 10,
-      font,
+      font: chromeFont,
       color: rgb(0.2, 0.22, 0.28),
     });
     cover.drawText(`簽發時間：${input.downloadedAtIso}`, {
       x: marginX + 18,
       y: 140,
       size: 9.5,
-      font,
+      font: chromeFont,
       color: rgb(0.35, 0.38, 0.44),
     });
     cover.drawText(
@@ -372,7 +438,7 @@ export async function generateWatermarkedBookPdf(
         x: marginX + 18,
         y: 114,
         size: 8.5,
-        font,
+        font: chromeFont,
         color: rgb(0.42, 0.22, 0.22),
       }
     );
@@ -387,8 +453,11 @@ export async function generateWatermarkedBookPdf(
   }
   drawWatermarkChrome(cover, pageCount);
 
-  if (cjkFontBytes) {
-    for (const ch of input.chapters) {
+  if (chromeFontBytes) {
+    for (let ci = 0; ci < sanitizedChapters.length; ci++) {
+      const ch = sanitizedChapters[ci];
+      const chFont = chapterFonts[ci] ?? chromeFont;
+
       pageCount += 1;
       let page = pdfDoc.addPage([pageWidth, pageHeight]);
       drawWatermarkChrome(page, pageCount);
@@ -400,7 +469,7 @@ export async function generateWatermarkedBookPdf(
           x: marginX,
           y: cursorY,
           size: 16,
-          font,
+          font: chFont,
           color: rgb(0.12, 0.16, 0.38),
         });
         cursorY -= 25;
@@ -417,11 +486,10 @@ export async function generateWatermarkedBookPdf(
           continue;
         }
 
-        // Render embedded JPG/PNG illustrations inside PDF!
         const imgMatch = !inCode ? trimmed.match(/^!\[(.*?)\]\((.*?)\)$/) : null;
         if (imgMatch) {
           const [, caption, imgSrc] = imgMatch;
-          const imgData = await loadImageBytes(imgSrc, input.siteOrigin);
+          const imgData = imageCache.get(imgSrc) ?? null;
           if (imgData) {
             const embedded =
               imgData.format === 'png'
@@ -449,14 +517,13 @@ export async function generateWatermarkedBookPdf(
                 x: marginX,
                 y: cursorY,
                 size: 8.5,
-                font,
+                font: chFont,
                 color: rgb(0.38, 0.42, 0.5),
               });
               cursorY -= 18;
             }
             continue;
           } else if (caption) {
-            // SVG diagram caption reference in PDF
             if (cursorY < 80) {
               pageCount += 1;
               page = pdfDoc.addPage([pageWidth, pageHeight]);
@@ -467,7 +534,7 @@ export async function generateWatermarkedBookPdf(
               x: marginX,
               y: cursorY,
               size: 10,
-              font,
+              font: chFont,
               color: rgb(0.22, 0.26, 0.62),
             });
             cursorY -= 20;
@@ -475,7 +542,6 @@ export async function generateWatermarkedBookPdf(
           }
         }
 
-        // Skip Markdown table separator lines
         if (/^\|?[\s:-]+\|/.test(trimmed)) {
           continue;
         }
@@ -503,17 +569,21 @@ export async function generateWatermarkedBookPdf(
             cursorY = pageHeight - 72;
           }
           if (wLine.length > 0) {
-            page.drawText(wLine, {
-              x: marginX,
-              y: cursorY,
-              size: isHeading ? 12.5 : 10,
-              font,
-              color: isHeading
-                ? rgb(0.14, 0.2, 0.48)
-                : isQuote
-                  ? rgb(0.18, 0.32, 0.55)
-                  : rgb(0.18, 0.2, 0.24),
-            });
+            try {
+              page.drawText(wLine, {
+                x: marginX,
+                y: cursorY,
+                size: isHeading ? 12.5 : 10,
+                font: chFont,
+                color: isHeading
+                  ? rgb(0.14, 0.2, 0.48)
+                  : isQuote
+                    ? rgb(0.18, 0.32, 0.55)
+                    : rgb(0.18, 0.2, 0.24),
+              });
+            } catch {
+              // Safely skip any rare unmapped symbol without failing the document
+            }
           }
           cursorY -= isHeading ? 21 : 17;
         }
