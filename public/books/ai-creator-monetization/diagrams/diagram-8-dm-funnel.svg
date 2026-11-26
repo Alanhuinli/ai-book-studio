@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400">
+  <rect width="960" height="400" rx="24" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/>
+  <rect x="40" y="28" width="168" height="28" rx="14" fill="#2563eb"/>
+  <text x="124" y="47" text-anchor="middle" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">圖解 08 · 自動私訊收單流</text>
+  <text x="40" y="90" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="24" font-weight="800">睡覺也在自動成交！「留言關鍵字 → 私訊成交」四步自動化漏斗</text>
+  <text x="40" y="116" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14">留言數越多推流越猛，同時自動把公域路人變成你的私域精準買家名單！</text>
+
+  <!-- Node 1 -->
+  <rect x="40" y="154" width="202" height="196" rx="16" fill="#ffffff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="60" y="186" fill="#2563eb" font-family="sans-serif" font-size="13" font-weight="800">STEP 1｜公開貼文誘餌</text>
+  <text x="60" y="216" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="16" font-weight="800">觀眾留言「+1」或關鍵字</text>
+  <text x="60" y="248" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">瞬間拉高貼文互動權重，</text>
+  <text x="60" y="270" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">觸發演算法二次免費推流。</text>
+  <rect x="60" y="302" width="162" height="28" rx="8" fill="#dbeafe"/>
+  <text x="141" y="321" text-anchor="middle" fill="#1d4ed8" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">流量放大器</text>
+
+  <!-- Node 2 -->
+  <rect x="266" y="154" width="202" height="196" rx="16" fill="#ffffff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="286" y="186" fill="#2563eb" font-family="sans-serif" font-size="13" font-weight="800">STEP 2｜機器人秒回私訊</text>
+  <text x="286" y="216" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="16" font-weight="800">3 秒內自動派發免費乾貨</text>
+  <text x="286" y="248" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">趁讀者熱度最高時送達</text>
+  <text x="286" y="270" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">「一頁速查表」或試讀連結。</text>
+  <rect x="286" y="302" width="162" height="28" rx="8" fill="#dbeafe"/>
+  <text x="367" y="321" text-anchor="middle" fill="#1d4ed8" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">開信率高達 80%+</text>
+
+  <!-- Node 3 -->
+  <rect x="492" y="154" width="202" height="196" rx="16" fill="#ffffff" stroke="#6366f1" stroke-width="2"/>
+  <text x="512" y="186" fill="#4f46e5" font-family="sans-serif" font-size="13" font-weight="800">STEP 3｜免費試讀第 1 章</text>
+  <text x="512" y="216" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="16" font-weight="800">進入自有書坊深度體驗</text>
+  <text x="512" y="248" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">讀者親眼見證全彩圖解品質，</text>
+  <text x="512" y="270" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">不用硬推銷自然產生購買慾。</text>
+  <rect x="512" y="302" width="162" height="28" rx="8" fill="#e0e7ff"/>
+  <text x="593" y="321" text-anchor="middle" fill="#4338ca" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">零阻力信任建立</text>
+
+  <!-- Node 4 -->
+  <rect x="718" y="154" width="202" height="196" rx="16" fill="#1e1b4b" stroke="#f59e0b" stroke-width="2"/>
+  <text x="738" y="186" fill="#fbbf24" font-family="sans-serif" font-size="13" font-weight="800">STEP 4｜自動結帳交付</text>
+  <text x="738" y="216" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="16" font-weight="800">刷卡／ATM 即時開通書櫃</text>
+  <text x="738" y="248" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">系統自動核發閱讀權與</text>
+  <text x="738" y="270" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">個人浮水印 PDF，全程零人工！</text>
+  <rect x="738" y="302" width="162" height="28" rx="8" fill="#f59e0b"/>
+  <text x="819" y="321" text-anchor="middle" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="800">24H 睡後現金流</text>
+</svg>

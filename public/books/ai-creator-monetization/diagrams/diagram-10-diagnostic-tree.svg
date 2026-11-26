@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430">
+  <rect width="960" height="430" rx="24" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="40" y="28" width="168" height="28" rx="14" fill="#e11d48"/>
+  <text x="124" y="47" text-anchor="middle" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">圖解 10 · 數據診斷決策樹</text>
+  <text x="40" y="90" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="24" font-weight="800">沒流量？沒買單？「4 大後台數據對症下藥」科學復盤圖</text>
+  <text x="40" y="116" fill="#64748b" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14">不要憑感覺亂改方向！每週日花 15 分鐘對照以下指標，精準找出卡關環節立刻修正</text>
+
+  <!-- Box 1 -->
+  <rect x="40" y="148" width="430" height="116" rx="16" fill="#ffffff" stroke="#f43f5e" stroke-width="2"/>
+  <text x="62" y="180" fill="#e11d48" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">症狀 A：瀏覽量極低 ／ 前 3 秒滑走率 &gt; 55%</text>
+  <text x="62" y="208" fill="#334155" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13.5">• 病因：開頭第一句太像教科書、封面字太小無痛點</text>
+  <text x="62" y="236" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13.5" font-weight="700">➔ 處方：內容不用重做！換掉前 2 行鉤子與首圖重發即可救活</text>
+
+  <!-- Box 2 -->
+  <rect x="490" y="148" width="430" height="116" rx="16" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="512" y="180" fill="#d97706" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">症狀 B：觀看破萬，但追蹤轉粉率 &lt; 0.5%</text>
+  <text x="512" y="208" fill="#334155" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13.5">• 病因：題材太泛娛樂、個人主頁沒有清楚價值定位</text>
+  <text x="512" y="236" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13.5" font-weight="700">➔ 處方：優化主頁置頂 3 篇代表作，明確告訴訪客追蹤能學到什麼</text>
+
+  <!-- Box 3 -->
+  <rect x="40" y="284" width="430" height="116" rx="16" fill="#ffffff" stroke="#6366f1" stroke-width="2"/>
+  <text x="62" y="316" fill="#4f46e5" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">症狀 C：很多人按讚，但沒人收藏或留言</text>
+  <text x="62" y="344" fill="#334155" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13.5">• 病因：只給雞湯情緒共鳴，缺少可執行的步驟清單或模板</text>
+  <text x="62" y="372" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13.5" font-weight="700">➔ 處方：加入「複製即用提示詞／對照表」並設計留言關鍵字誘餌</text>
+
+  <!-- Box 4 -->
+  <rect x="490" y="284" width="430" height="116" rx="16" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+  <text x="512" y="316" fill="#059669" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">症狀 D：很多人領免費試讀，但付費轉換率 &lt; 2%</text>
+  <text x="512" y="344" fill="#334155" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13.5">• 病因：免費試讀與付費產品主題脫節，或缺少實戰成果證明</text>
+  <text x="512" y="372" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13.5" font-weight="700">➔ 處方：在試讀章節尾端清楚預告後段核心模板，強調 1/10 改版保障</text>
+</svg>

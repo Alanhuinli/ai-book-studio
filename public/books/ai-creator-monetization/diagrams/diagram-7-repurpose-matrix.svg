@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440">
+  <rect width="960" height="440" rx="24" fill="#0f172a"/>
+  <rect x="40" y="28" width="164" height="28" rx="14" fill="#8b5cf6"/>
+  <text x="122" y="47" text-anchor="middle" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">圖解 07 · 一魚七吃矩陣</text>
+  <text x="40" y="90" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="24" font-weight="800">「1 份核心母稿 → 7 個全網曝光資產」AI 自動裂變引擎</text>
+  <text x="40" y="116" fill="#94a3b8" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14">頂尖一人創作者絕不為不同平台重寫內容！一次深度思考，透過 AI 轉換格式霸佔全平台流量</text>
+
+  <!-- Source Core Box -->
+  <rect x="44" y="196" width="236" height="164" rx="20" fill="#4f46e5" stroke="#a5b4fc" stroke-width="2"/>
+  <text x="162" y="236" text-anchor="middle" fill="#fde68a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13" font-weight="800">每週唯一源頭輸入</text>
+  <text x="162" y="268" text-anchor="middle" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="20" font-weight="800">1 篇深度實戰筆記</text>
+  <text x="162" y="298" text-anchor="middle" fill="#e0e7ff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">（約 1,200 字或 5 分鐘語音）</text>
+  <text x="162" y="330" text-anchor="middle" fill="#c7d2fe" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12">包含：1痛點＋3步驟＋1案例</text>
+
+  <!-- Connecting Lines -->
+  <path d="M280 278 L350 176 M280 278 L350 244 M280 278 L350 312 M280 278 L350 380" stroke="#818cf8" stroke-width="2"/>
+
+  <!-- Output Column 1 -->
+  <rect x="352" y="148" width="276" height="54" rx="12" fill="#1e293b" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="372" y="180" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700">① Threads 觀點短串文 × 3 篇</text>
+
+  <rect x="352" y="216" width="276" height="54" rx="12" fill="#1e293b" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="372" y="248" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700">② IG 8 頁知識輪播圖卡 × 1 組</text>
+
+  <rect x="352" y="284" width="276" height="54" rx="12" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="372" y="316" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700">③ IG Reels 60 秒短影音 × 1 支</text>
+
+  <rect x="352" y="352" width="276" height="54" rx="12" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="372" y="384" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="700">④ YouTube Shorts ＆ TikTok 同步</text>
+
+  <!-- Output Column 2 -->
+  <rect x="652" y="148" width="268" height="76" rx="14" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="672" y="180" fill="#6ee7b7" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="800">⑤ 方格子／部落格 SEO 長文</text>
+  <text x="672" y="204" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12">持續累積 Google 被動搜尋長尾流量</text>
+
+  <rect x="652" y="238" width="268" height="76" rx="14" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="672" y="270" fill="#7dd3fc" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="800">⑥ 每週深度電子報（私域養粉）</text>
+  <text x="672" y="294" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12">不受演算法綁架，新品開賣轉換率最高</text>
+
+  <rect x="652" y="328" width="268" height="78" rx="14" fill="#78350f" stroke="#fbbf24" stroke-width="2"/>
+  <text x="672" y="360" fill="#fde68a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14" font-weight="800">⑦ 沉澱為原創電子書章節資產！</text>
+  <text x="672" y="384" fill="#fef3c7" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12">累積 10 週母稿 ＝ 自動寫完 1 本專書</text>
+</svg>

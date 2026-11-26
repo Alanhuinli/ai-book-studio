@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400">
+  <rect width="960" height="400" rx="24" fill="#0f172a"/>
+  <rect x="40" y="28" width="168" height="28" rx="14" fill="#10b981"/>
+  <text x="124" y="47" text-anchor="middle" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">圖解 09 · 業配報價與選品</text>
+  <text x="40" y="90" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="24" font-weight="800">垂直奈米網紅（1,000～10,000 粉）商業合作報價公式</text>
+  <text x="40" y="116" fill="#94a3b8" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14">知識型帳號含金量遠高於娛樂帳號！別再免費互惠，用「打包組合價」提高廠商過稿率與單價</text>
+
+  <!-- Formula Banner -->
+  <rect x="40" y="146" width="880" height="72" rx="16" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="480" y="176" text-anchor="middle" fill="#6ee7b7" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13" font-weight="700">台灣知識型／AI 效率類創作者合理報價基準公式</text>
+  <text x="480" y="203" text-anchor="middle" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="18" font-weight="800">單支合作報價 ＝（近 10 篇平均觀看數 × NT$ 0.8 ~ 1.5）＋ 內容製作費 NT$ 3,500 起 ＋ 廣告投廣授權費 30%</text>
+
+  <!-- 3 Package Tiers -->
+  <rect x="40" y="238" width="280" height="132" rx="14" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="60" y="268" fill="#94a3b8" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13" font-weight="700">輕量曝光方案｜1,000+ 粉</text>
+  <text x="60" y="298" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="18" font-weight="800">Threads 深度實測串文</text>
+  <text x="60" y="326" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">含實測截圖＋留言區專屬折扣連結</text>
+  <text x="60" y="352" fill="#34d399" font-family="sans-serif" font-size="14" font-weight="800">行情：NT$ 3,500 ~ 8,000 / 篇</text>
+
+  <rect x="340" y="238" width="280" height="132" rx="14" fill="#312e81" stroke="#818cf8" stroke-width="2"/>
+  <text x="360" y="268" fill="#c7d2fe" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13" font-weight="700">主力推薦方案｜3,000+ 粉</text>
+  <text x="360" y="298" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="18" font-weight="800">60 秒 Reels ＋ IG 限動導購</text>
+  <text x="360" y="326" fill="#e0e7ff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">實操演示解決痛點＋關鍵字自動私訊</text>
+  <text x="360" y="352" fill="#fbbf24" font-family="sans-serif" font-size="14" font-weight="800">行情：NT$ 12,000 ~ 28,000 / 檔</text>
+
+  <rect x="640" y="238" width="280" height="132" rx="14" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="660" y="268" fill="#fde68a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13" font-weight="700">全網旗艦包套｜5,000+ 粉</text>
+  <text x="660" y="298" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="18" font-weight="800">短影音＋輪播圖＋分潤抽成</text>
+  <text x="660" y="326" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">基本稿費保底 ＋ 銷售額 15%~25% 分潤</text>
+  <text x="660" y="352" fill="#fbbf24" font-family="sans-serif" font-size="14" font-weight="800">行情：NT$ 25,000+ ＆ 長尾分潤</text>
+</svg>

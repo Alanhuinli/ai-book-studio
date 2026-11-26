@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420">
+  <rect width="960" height="420" rx="24" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="40" y="28" width="164" height="28" rx="14" fill="#0f172a"/>
+  <text x="122" y="47" text-anchor="middle" fill="#38bdf8" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">圖解 06 · 零露臉 IP 記憶點</text>
+  <text x="40" y="90" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="24" font-weight="800">不露臉也能建立百萬鐵粉信任！「三角 IP 辨識度」黃金模型</text>
+  <text x="40" y="116" fill="#64748b" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14">擔心公司同事認出來？只要固定以下三大感官錨點，不露真臉依然能擁有極高個人品牌溢價</text>
+
+  <!-- Pillar 1 -->
+  <rect x="44" y="148" width="276" height="236" rx="18" fill="#ffffff" stroke="#6366f1" stroke-width="2"/>
+  <rect x="64" y="168" width="128" height="28" rx="8" fill="#eef2ff"/>
+  <text x="128" y="187" text-anchor="middle" fill="#4338ca" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13" font-weight="800">錨點 1：視覺色彩錨</text>
+  <text x="64" y="224" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="18" font-weight="800">固定 2 色品牌主視覺</text>
+  <text x="64" y="256" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 統一字體＋固定封面版型</text>
+  <text x="64" y="282" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 專屬 2D/3D 頭像插畫代表本人</text>
+  <text x="64" y="308" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 讀者滑過去 0.5 秒就認出是你</text>
+  <text x="64" y="356" fill="#4f46e5" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5" font-weight="700">範例：深邃靛藍底 ＋ 暖琥珀金重點字</text>
+
+  <!-- Pillar 2 -->
+  <rect x="342" y="148" width="276" height="236" rx="18" fill="#ffffff" stroke="#0ea5e9" stroke-width="2"/>
+  <rect x="362" y="168" width="128" height="28" rx="8" fill="#e0f2fe"/>
+  <text x="426" y="187" text-anchor="middle" fill="#0369a1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13" font-weight="800">錨點 2：聽覺聲音錨</text>
+  <text x="362" y="224" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="18" font-weight="800">真人溫度或專屬聲音模型</text>
+  <text x="362" y="256" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 首選：本人聲音 1.15 倍速清脆口播</text>
+  <text x="362" y="282" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 進階：錄 3 分鐘訓練本人 AI 語音克隆</text>
+  <text x="362" y="308" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 嚴禁使用爛大街罐頭機器人配音</text>
+  <text x="362" y="356" fill="#0284c7" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5" font-weight="700">真人聲線信任轉換率高出罐頭音 4 倍</text>
+
+  <!-- Pillar 3 -->
+  <rect x="640" y="148" width="276" height="236" rx="18" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="660" y="168" width="128" height="28" rx="8" fill="#fef3c7"/>
+  <text x="724" y="187" text-anchor="middle" fill="#b45309" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13" font-weight="800">錨點 3：觀點口頭禪錨</text>
+  <text x="660" y="224" fill="#0f172a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="18" font-weight="800">標誌性開場白與實戰立場</text>
+  <text x="660" y="256" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 固定一句話主張（如：拒絕無效加班）</text>
+  <text x="660" y="282" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 真實曬出實測截圖與數據過程</text>
+  <text x="660" y="308" fill="#475569" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="13">• 敢說真話評測工具優缺點</text>
+  <text x="660" y="356" fill="#d97706" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5" font-weight="700">用「真實實測證據」取代「露臉自拍」</text>
+</svg>

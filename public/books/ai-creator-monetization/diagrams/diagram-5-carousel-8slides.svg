@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440">
+  <rect width="960" height="440" rx="24" fill="#0f172a"/>
+  <rect x="40" y="28" width="164" height="28" rx="14" fill="#6366f1"/>
+  <text x="122" y="47" text-anchor="middle" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12" font-weight="700">圖解 05 · 高收藏輪播圖</text>
+  <text x="40" y="90" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="24" font-weight="800">IG ＆ Threads「8 頁高收藏知識輪播圖卡」黃金結構公式</text>
+  <text x="40" y="116" fill="#94a3b8" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="14">不用學複雜設計軟體！固定 1 套雙色品牌模板，每頁只講 1 個重點，收藏率翻 3 倍</text>
+
+  <!-- 4 Top Cards (Page 1-4) -->
+  <rect x="40" y="144" width="210" height="124" rx="14" fill="#312e81" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="58" y="172" fill="#fbbf24" font-family="sans-serif" font-size="13" font-weight="800">P.01｜視覺大字封面</text>
+  <text x="58" y="200" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">痛點結果大標題（12字內）</text>
+  <text x="58" y="226" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">加上「往左滑看步驟 ➔」視覺箭頭</text>
+  <text x="58" y="250" fill="#a5b4fc" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="11.5">決定 85% 滑動開門率</text>
+
+  <rect x="266" y="144" width="210" height="124" rx="14" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="284" y="172" fill="#38bdf8" font-family="sans-serif" font-size="13" font-weight="800">P.02｜顛覆舊認知</text>
+  <text x="284" y="200" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">為什麼你以前做錯了？</text>
+  <text x="284" y="226" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">用 ❌ 舊方法 vs ✅ 新思維對比</text>
+  <text x="284" y="250" fill="#7dd3fc" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="11.5">引發強烈好奇繼續滑</text>
+
+  <rect x="492" y="144" width="210" height="124" rx="14" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="510" y="172" fill="#34d399" font-family="sans-serif" font-size="13" font-weight="800">P.03｜核心步驟 ①</text>
+  <text x="510" y="200" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">第一步：最低門檻起手式</text>
+  <text x="510" y="226" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">1 張小截圖 ＋ 3 行精簡說明</text>
+  <text x="510" y="250" fill="#6ee7b7" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="11.5">建立「我也做得到」信心</text>
+
+  <rect x="718" y="144" width="202" height="124" rx="14" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="736" y="172" fill="#34d399" font-family="sans-serif" font-size="13" font-weight="800">P.04｜核心步驟 ②</text>
+  <text x="736" y="200" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">第二步：AI 加速關鍵指令</text>
+  <text x="736" y="226" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">直接貼出指令框讓讀者截圖</text>
+  <text x="736" y="250" fill="#6ee7b7" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="11.5">大幅拉高珍藏比率</text>
+
+  <!-- 4 Bottom Cards (Page 5-8) -->
+  <rect x="40" y="286" width="210" height="124" rx="14" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="58" y="314" fill="#34d399" font-family="sans-serif" font-size="13" font-weight="800">P.05｜核心步驟 ③</text>
+  <text x="58" y="342" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">第三步：放大成果秘訣</text>
+  <text x="58" y="368" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">補充進階微調參數與眉角</text>
+  <text x="58" y="392" fill="#6ee7b7" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="11.5">展現作者實戰專業度</text>
+
+  <rect x="266" y="286" width="210" height="124" rx="14" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="284" y="314" fill="#f472b6" font-family="sans-serif" font-size="13" font-weight="800">P.06｜真實成果案例</text>
+  <text x="284" y="342" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">套用後的前後數據對照</text>
+  <text x="284" y="368" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">從耗時 3 小時縮短為 15 分鐘</text>
+  <text x="284" y="392" fill="#f9a8d4" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="11.5">強化說服力與信任感</text>
+
+  <rect x="492" y="286" width="210" height="124" rx="14" fill="#1e293b" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="510" y="314" fill="#a5b4fc" font-family="sans-serif" font-size="13" font-weight="800">P.07｜一頁總結懶人包</text>
+  <text x="510" y="342" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">全篇重點 CheckList</text>
+  <text x="510" y="368" fill="#cbd5e1" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">濃縮成 5 條檢核表專供收藏</text>
+  <text x="510" y="392" fill="#c7d2fe" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="11.5">演算法最愛高收藏頁</text>
+
+  <rect x="718" y="286" width="202" height="124" rx="14" fill="#b45309" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="736" y="314" fill="#fef3c7" font-family="sans-serif" font-size="13" font-weight="800">P.08｜導流變現尾頁</text>
+  <text x="736" y="342" fill="#ffffff" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="15" font-weight="800">追蹤＋留言領完整模板</text>
+  <text x="736" y="368" fill="#fef3c7" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="12.5">引導點擊主頁試讀原創電子書</text>
+  <text x="736" y="392" fill="#fde68a" font-family="'Noto Sans TC','Microsoft JhengHei',sans-serif" font-size="11.5">完成漲粉與收單閉環</text>
+</svg>
