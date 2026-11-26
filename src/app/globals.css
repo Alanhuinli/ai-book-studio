@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* 線上防拷章節閱讀器專用樣式與防列印保護 */
+.anti-copy-reader {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+@media print {
+  .anti-copy-reader {
+    display: none !important;
+  }
+  .print-warning-only {
+    display: block !important;
+  }
+}
