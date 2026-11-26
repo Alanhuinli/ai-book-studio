@@ -2,9 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
+  BookOpenCheck,
   BookPlus,
   CheckCircle2,
+  ExternalLink,
+  Eye,
+  EyeOff,
   FileUp,
   Layers,
   Loader2,
@@ -43,8 +48,11 @@ export function AdminDashboardClient({
 }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<
-    'orders' | 'new_book' | 'new_version' | 'users' | 'settings'
-  >('orders');
+    'catalog' | 'orders' | 'new_book' | 'new_version' | 'users' | 'settings'
+  >('catalog');
+  const [confirmDeleteBookId, setConfirmDeleteBookId] = useState<string | null>(
+    null
+  );
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{
     type: 'ok' | 'err';
@@ -453,6 +461,60 @@ export function AdminDashboardClient({
     }
   };
 
+  const handleToggleBookPublish = async (book: Tables<'books'>) => {
+    setBusy(true);
+    try {
+      const supabase = createClient();
+      const nextState = !book.is_published;
+      const { error } = await supabase
+        .from('books')
+        .update({
+          is_published: nextState,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', book.id);
+      if (error) throw error;
+      notify(
+        'ok',
+        nextState
+          ? `《${book.title}》已重新公開上架至前台書城！`
+          : `《${book.title}》已隱藏下架（前台書城不再顯示，既有訂戶閱讀權仍完整保留）。`
+      );
+      router.refresh();
+    } catch (err) {
+      notify('err', err instanceof Error ? err.message : '切換上下架狀態失敗');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleDeleteBook = async (book: Tables<'books'>) => {
+    setBusy(true);
+    try {
+      const supabase = createClient();
+      // Remove any associated test orders first so ON DELETE RESTRICT doesn't block cleanup
+      const { error: ordDelErr } = await supabase
+        .from('orders')
+        .delete()
+        .eq('book_id', book.id);
+      if (ordDelErr) throw ordDelErr;
+
+      const { error: bookDelErr } = await supabase
+        .from('books')
+        .delete()
+        .eq('id', book.id);
+      if (bookDelErr) throw bookDelErr;
+
+      setConfirmDeleteBookId(null);
+      notify('ok', `已永久刪除《${book.title}》及其所有版本與章節資料。`);
+      router.refresh();
+    } catch (err) {
+      notify('err', err instanceof Error ? err.message : '刪除書籍失敗');
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* KPI Cards */}
@@ -497,6 +559,19 @@ export function AdminDashboardClient({
 
       {/* Navigation Tabs */}
       <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-3">
+        <button
+          type="button"
+          onClick={() => setActiveTab('catalog')}
+          className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition ${
+            activeTab === 'catalog'
+              ? 'bg-indigo-600 text-white'
+              : 'bg-white text-slate-600 hover:bg-slate-100'
+          }`}
+        >
+          <BookOpenCheck className="h-4 w-4" />
+          <span>書目上下架／刪除管理</span>
+        </button>
+
         <button
           type="button"
           onClick={() => setActiveTab('orders')}
@@ -562,6 +637,156 @@ export function AdminDashboardClient({
           <span>金流與審核頁尾設定</span>
         </button>
       </div>
+
+      {/* Tab 0: Catalog Management (Publish / Unpublish / Delete) */}
+      {activeTab === 'catalog' && (
+        <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
+          <div className="flex flex-col justify-between gap-2 border-b border-slate-100 px-6 py-4 sm:flex-row sm:items-center">
+            <div>
+              <h2 className="text-base font-bold text-slate-900">
+                全站電子書書目上下架與刪除管理
+              </h2>
+              <p className="mt-0.5 text-xs text-slate-500">
+                金流審核期間建議保留 3 本示範書為「上架中」；審核通過後可一鍵「隱藏下架」或「永久刪除」示範書，換上您的正式作品。
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setActiveTab('new_book')}
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-indigo-700"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>新增電子書</span>
+            </button>
+          </div>
+
+          {books.length === 0 ? (
+            <p className="p-8 text-center text-sm text-slate-500">
+              目前尚無任何書籍，請點擊右上角「新增電子書」建立您的第一本作品。
+            </p>
+          ) : (
+            <div className="divide-y divide-slate-100">
+              {books.map((b) => {
+                const bVersions = versions
+                  .filter((v) => v.book_id === b.id)
+                  .sort((x, y) => Number(y.version_number) - Number(x.version_number));
+                const latestVer =
+                  bVersions.find((v) => v.id === b.current_version_id) ??
+                  bVersions[0];
+                const isConfirmingDelete = confirmDeleteBookId === b.id;
+
+                return (
+                  <div
+                    key={b.id}
+                    className="flex flex-col justify-between gap-4 p-6 transition hover:bg-slate-50/60 lg:flex-row lg:items-center"
+                  >
+                    <div className="space-y-1.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        {b.is_published ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800">
+                            <Eye className="h-3 w-3" />
+                            公開上架中
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-200 px-2.5 py-0.5 text-[11px] font-bold text-slate-700">
+                            <EyeOff className="h-3 w-3" />
+                            已隱藏下架
+                          </span>
+                        )}
+                        <span className="rounded bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold text-indigo-700">
+                          {b.category}
+                        </span>
+                        <h3 className="text-sm font-bold text-slate-900 sm:text-base">
+                          {b.title}
+                        </h3>
+                      </div>
+
+                      <p className="text-xs text-slate-500">
+                        網址代稱：<code className="text-slate-700">/books/{b.slug}</code>
+                        {latestVer && (
+                          <>
+                            　｜　當前版本：<strong>{latestVer.version_code}</strong>（
+                            {formatTwd(latestVer.list_price_twd)}）　｜　共{' '}
+                            {bVersions.length} 個發行版本
+                          </>
+                        )}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Link
+                        href={`/books/${b.slug}`}
+                        target="_blank"
+                        className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                      >
+                        <ExternalLink className="h-3.5 w-3.5" />
+                        <span>預覽頁面</span>
+                      </Link>
+
+                      <button
+                        type="button"
+                        disabled={busy}
+                        onClick={() => handleToggleBookPublish(b)}
+                        className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold transition disabled:opacity-60 ${
+                          b.is_published
+                            ? 'border border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100'
+                            : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                        }`}
+                      >
+                        {b.is_published ? (
+                          <>
+                            <EyeOff className="h-3.5 w-3.5" />
+                            <span>隱藏下架</span>
+                          </>
+                        ) : (
+                          <>
+                            <Eye className="h-3.5 w-3.5" />
+                            <span>重新上架</span>
+                          </>
+                        )}
+                      </button>
+
+                      {isConfirmingDelete ? (
+                        <div className="flex items-center gap-1.5 rounded-xl border border-rose-300 bg-rose-50 px-3 py-1.5">
+                          <span className="text-xs font-bold text-rose-800">
+                            確定永久刪除？
+                          </span>
+                          <button
+                            type="button"
+                            disabled={busy}
+                            onClick={() => handleDeleteBook(b)}
+                            className="rounded-lg bg-rose-600 px-2.5 py-1 text-xs font-bold text-white hover:bg-rose-700"
+                          >
+                            確認刪除
+                          </button>
+                          <button
+                            type="button"
+                            disabled={busy}
+                            onClick={() => setConfirmDeleteBookId(null)}
+                            className="rounded-lg border border-slate-300 bg-white px-2 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                          >
+                            取消
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          disabled={busy}
+                          onClick={() => setConfirmDeleteBookId(b.id)}
+                          className="inline-flex items-center gap-1 rounded-xl border border-rose-200 bg-white px-3 py-2 text-xs font-bold text-rose-600 transition hover:bg-rose-50 disabled:opacity-60"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                          <span>刪除</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Tab 1: Orders */}
       {activeTab === 'orders' && (

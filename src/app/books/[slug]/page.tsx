@@ -94,6 +94,12 @@ export default async function BookDetailPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      {!book.is_published && (
+        <div className="mb-6 rounded-2xl border border-amber-300 bg-amber-50 px-5 py-3.5 text-xs font-semibold text-amber-900">
+          作者預覽模式：本書目前處於「已隱藏下架」狀態，一般訪客與前台書城均不會顯示此書。
+        </div>
+      )}
+
       {/* Breadcrumb */}
       <div className="mb-6 flex items-center gap-2 text-xs text-slate-500">
         <Link href="/" className="hover:text-indigo-600">
